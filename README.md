@@ -1,3 +1,3 @@
 # Codebreaker-rackapp
 
-http://egnrackapp.herokuapp.com/game
+http://egnrackapp.herokuapp.com/
