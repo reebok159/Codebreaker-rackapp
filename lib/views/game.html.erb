@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script >
+
+  function check_guess()
+  {
+    var guess = document.getElementById('guess_input').value;
+    if(/[1-6]{4}/.test(guess))
+      return true;
+
+    alert("Enter correct number");
+
+    return false;
+  }
+
+  </script>
+    <title>Codebreaker | Game</title>
+    <link rel="stylesheet" href="/stylesheets/application.css" type="text/css">
+  </head>
+  <body>
+    <div id="container">
+      Player: <%= get_name %><br/>
+
+<%= @game.get_secret_code %>
+      Attempts: <%= attempts %><br/>
+      <h1>Enter your guess:</h1>
+      <form method="post" action="/make_guess" onsubmit="return check_guess();">
+        <input name="guess" id="guess_input" type="text" autocomplete="off">
+        <input type="submit" value="send">
+
+      </form>
+      <form method="post" action="/hint">
+      <button type="submit" name="hint" value="yes">hint</button>
+      </form>
+      <% if hint != 'none' %>
+        <br /><h1>HINT: <%= hint %>
+        <% end %>
+
+      <% if result  != 'none' %>
+        <br /><span style="font-size: 17px; font-weight: bold;">Result: <%= result %></span>
+      <% end %>
+
+      <div class="guesses">
+        <% if last_guesses != '' %>
+        <br />Last guesses: <br/>
+          <%= last_guesses %>
+        <% end %>
+      </div>
+    </div>
+  </body>
+</html>
