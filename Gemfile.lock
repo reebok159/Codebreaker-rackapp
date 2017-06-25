@@ -1,0 +1,23 @@
+GIT
+  remote: https://github.com/reebok159/Codebreaker.git
+  revision: 901b90c366164ac68004a8f1d6459294249fcc98
+  branch: dev
+  specs:
+    codebreaker (1.1.3)
+
+GEM
+  specs:
+    rack (2.0.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  codebreaker!
+  rack
+
+RUBY VERSION
+   ruby 2.4.0p0
+
+BUNDLED WITH
+   1.15.1
