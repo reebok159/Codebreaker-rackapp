@@ -109,7 +109,7 @@ class Racker
   end
 
   def secret_code
-     game = Codebreaker::Game.new
+     @request.env['rack.session']['game_obj'].get_secret_code
   end
 
   def last_guesses
