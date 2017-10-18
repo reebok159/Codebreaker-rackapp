@@ -11,6 +11,15 @@
         <input name="player_name" type="text">
         <input type="submit" value="START!">
       </form>
+      <hr />
+      <h2>Last 10 results:</h2> <br />
+      <% if load_results.nil? %>
+        Not found
+      <% else %>
+      <% load_results.each do |item| %>
+        <%= item.inspect %>
+      <% end %>
+      <% end %>
     </div>
   </body>
 </html>
