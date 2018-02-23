@@ -112,7 +112,6 @@ class Action
     parsed = YAML.load_file("results.yml")
     parsed['results']
   rescue Exception => e
-    puts "Not found"
   end
 
   def render_view(page)
