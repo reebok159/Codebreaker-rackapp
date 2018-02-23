@@ -12,13 +12,13 @@ class Racker
 
   def response
     case @request.path
-    when '/' then @action.index
-    when '/start_game' then @action.start_game
-    when '/make_guess' then @action.make_guess
-    when '/game' then @action.game
-    when '/hint' then @action.get_hint
-    when '/result' then @action.show_result
-    else @action.not_found
+    when '/'            then @action.show_index
+    when '/play'        then @action.show_play
+    when '/result'      then @action.show_result
+    when '/start_game'  then @action.start_game
+    when '/make_guess'  then @action.make_guess
+    when '/hint'        then @action.get_hint
+    else Rack::Response.new('Not Found', 404)
     end
   end
 end

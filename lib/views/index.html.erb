@@ -12,13 +12,14 @@
         <input type="submit" value="START!">
       </form>
       <hr />
-      <h2>Last 10 results:</h2> <br />
+      <h2>Last winners:</h2> <br />
       <% if load_results.nil? %>
         Not found
       <% else %>
-      <% load_results.each do |item| %>
-        <%= item.inspect %>
-      <% end %>
+        <% load_results.each do |item| %>
+          <b>name:</b> <%= item[:name] %>, <b>code:</b> <%= item[:code] %>
+          <hr style="width: 50px; margin-left: 0px;">
+        <% end %>
       <% end %>
     </div>
   </body>

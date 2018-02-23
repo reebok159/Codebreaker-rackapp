@@ -6,9 +6,9 @@
   </head>
   <body>
     <div id="container">
-    <h1>Game over (code: <%= secret_code %> )</h1>
+    <h1>Game over (code: <%= @game.get_secret_code %> )</h1>
 
-      <%= result %>
+      <%= @session['result'] %>
     <br />
     <a href="/">Try again</a>
     </div>
