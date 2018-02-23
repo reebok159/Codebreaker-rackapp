@@ -13,10 +13,10 @@
       </form>
       <hr />
       <h2>Last winners:</h2> <br />
-      <% if load_results.nil? %>
+      <% if @file_service.load_results.nil? %>
         Not found
       <% else %>
-        <% load_results.each do |item| %>
+        <% @file_service.load_results.each do |item| %>
           <b>name:</b> <%= item[:name] %>, <b>code:</b> <%= item[:code] %>
           <hr style="width: 50px; margin-left: 0px;">
         <% end %>

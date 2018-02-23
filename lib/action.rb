@@ -1,10 +1,12 @@
 require 'codebreaker'
-require 'yaml'
-require 'yaml/store'
+require_relative 'services/file_service'
+require_relative 'services/game_service'
 
 class Action
   def initialize(request)
     @request = request
+    @game_service = GameService.new(@request)
+    @file_service = FileService.new(@request)
     @session = @request.session
     @params = @request.params
     @game = @session['game_obj']
@@ -27,7 +29,7 @@ class Action
   end
 
   def start_game
-    init_game
+    @game_service.init_game
     Rack::Response.new do |response|
       response.redirect('/play')
     end
@@ -36,9 +38,9 @@ class Action
   def make_guess
     Rack::Response.new do |response|
       response.redirect('/') and next unless is_playing?
-      clear_temp
+      @game_service.clear_result_and_hint
       input_guess = @params['guess'].to_s
-      res = check_guess(input_guess)
+      res = @game_service.check_guess(input_guess)
       finish_game(res, response) and next if res == :lose || res == '++++'
       save_last_guess(res, input_guess)
       return_to_game(res, response)
@@ -55,14 +57,9 @@ class Action
 
   private
 
-  def check_guess(guess)
-    return unless guess.size == 4
-    @game.make_guess(guess)
-  end
-
   def finish_game(res, response)
     @session['playing'] = false
-    save_result(res)
+    @file_service.save_result(res)
     res = res == '++++' ? 'You win' : 'You lose'
     @session['result'] = res
     response.redirect('/result')
@@ -78,39 +75,8 @@ class Action
     response.redirect('/play')
   end
 
-  def init_game
-    game = Codebreaker::Game.new
-    game.start
-    clear_temp
-    @session['game_obj'] = game
-    @session['last_guesses'] = []
-    @session['playing'] = true
-    name = @params['player_name']
-    @session['player_name'] = name.to_s.empty? ? 'stranger' : name
-  end
-
   def is_playing?
     @session['playing'] || false
-  end
-
-  def clear_temp
-    @session['result'] = ''
-    @session['hint'] = ''
-  end
-
-  def save_result(res)
-    return if res == :lose
-    data = { name: @session['player_name'], code: @game.get_secret_code }
-    store = YAML::Store.new "results.yml"
-    store.transaction do
-      store["results"] = store["results"].to_a.unshift(data)
-    end
-  end
-
-  def load_results
-    parsed = YAML.load_file("results.yml")
-    parsed['results']
-  rescue Exception => e
   end
 
   def render_view(page)
