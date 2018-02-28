@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <script >
+
+  function check_guess()
+  {
+    var guess = document.getElementById('guess_input').value;
+    if(/[1-6]{4}/.test(guess))
+      return true;
+
+    alert("Enter correct number");
+
+    return false;
+  }
+
+  </script>
+    <title>Codebreaker | Game</title>
+    <link rel="stylesheet" href="/stylesheets/application.css" type="text/css">
+  </head>
+  <body>
+    <div id="container">
+      Player: <%= @session['player_name'] %><br/>
+      Attempts: <%= @game.attempts %><br/>
+      <h1>Enter your guess:</h1>
+      <form method="post" action="/make_guess" onsubmit="return check_guess();">
+        <input name="guess" id="guess_input" type="text" autocomplete="off">
+        <input type="submit" value="send">
+
+      </form>
+      <form method="post" action="/hint">
+      <button type="submit" name="hint" value="yes">hint</button>
+      </form>
+      <% unless @session['hint'].to_s.empty? %>
+        <br /><h3>HINT: <%= @session['hint'] %></h3>
+      <% end %>
+
+      <% unless @session['result'].to_s.empty? %>
+        <br /><span style="font-size: 17px; font-weight: bold;">Result: <%= @session['result'] %></span>
+      <% end %>
+
+      <div class="guesses">
+        <% unless @session['last_guesses'].to_a.empty? %>
+        <br />Last guesses: <br/>
+          <% @session['last_guesses'].each_with_index do |item, i| %>
+            <%= "#{i+1}. #{item}" %> <br>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </body>
+</html>
